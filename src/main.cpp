@@ -7,7 +7,7 @@ const H5std_string FILE_NAME("SDS.h5");
 const H5std_string DATASET_NAME("IntArray");
 //const int NX = 5; // dataset dimensions
 //const int NY = 6;
-const int RANK = 2;
+const int RANK = 3;
 
 const int NX_SUB = 3; // hyperslab dimensions
 const int NY_SUB = 4;
@@ -22,11 +22,14 @@ int createHDF5()
     * Data initialization.
     */
     int i, j;
-    int data[NX][NY]; // buffer for data to write
+    int data[NX][NY][NZ]; // buffer for data to write
     for (j = 0; j < NX; j++)
     {
         for (i = 0; i < NY; i++)
-            data[j][i] = i + j;
+        {
+            for (int k = 0; k < NZ; k++)
+                data[j][i][k] = i + j+ k;
+        }
     }
     /*
     * 0 1 2 3 4 5
@@ -53,9 +56,10 @@ int createHDF5()
        * Define the size of the array and create the data space for fixed
        * size dataset.
        */
-        hsize_t dimsf[2]; // dataset dimensions
+        hsize_t dimsf[3]; // dataset dimensions
         dimsf[0] = NX;
         dimsf[1] = NY;
+        dimsf[2] = NZ;
         DataSpace dataspace(RANK, dimsf);
         /*
        * Define datatype for the data in the file.
@@ -169,19 +173,21 @@ int readHDF5()
        * Get the dimension size of each dimension in the dataspace and
        * display them.
        */
-        hsize_t dims_out[2];
+        hsize_t dims_out[3];
         int ndims = dataspace.getSimpleExtentDims(dims_out, NULL);
-        std::cout << "rank " << rank << ", dimensions " << (unsigned long)(dims_out[0]) << " x " << (unsigned long)(dims_out[1]) << std::endl;
+        std::cout << "rank " << rank << ", dimensions " << (unsigned long)(dims_out[0]) << " x " << (unsigned long)(dims_out[1]) << " x " << (unsigned long)(dims_out[2]) << std::endl;
         /*
        * Define hyperslab in the dataset; implicitly giving strike and
        * block NULL.
        */
-        hsize_t offset[2]; // hyperslab offset in the file
-        hsize_t count[2];  // size of the hyperslab in the file
+        hsize_t offset[3]; // hyperslab offset in the file
+        hsize_t count[3];  // size of the hyperslab in the file
         offset[0] = 1;
         offset[1] = 2;
+        offset[2] = 0;
         count[0] = NX_SUB;
         count[1] = NY_SUB;
+        count[2] = 3;
         dataspace.selectHyperslab(H5S_SELECT_SET, count, offset);
         /*
        * Define the memory dataspace.
@@ -196,23 +202,27 @@ int readHDF5()
        */
         hsize_t offset_out[3]; // hyperslab offset in memory
         hsize_t count_out[3];  // size of the hyperslab in memory
+        
         offset_out[0] = 3;
         offset_out[1] = 0;
         offset_out[2] = 0;
         count_out[0] = NX_SUB;
         count_out[1] = NY_SUB;
-        count_out[2] = 1;
+        count_out[2] = 3;
         memspace.selectHyperslab(H5S_SELECT_SET, count_out, offset_out);
         /*
        * Read data from hyperslab in the file into the hyperslab in
        * memory and display the data.
        */
         dataset.read(data_out, PredType::NATIVE_INT, memspace, dataspace);
-        for (j = 0; j < NX; j++)
-        {
-            for (i = 0; i < NY; i++)
-                std::cout << data_out[j][i][0] << " ";
-            std::cout << std::endl;
+        for(int k = 0; k < NZ; k++) {
+            for (j = 0; j < NX; j++)
+            {
+                for (i = 0; i < NY; i++)
+                    std::cout << data_out[j][i][k] << " ";
+                std::cout << std::endl;
+            }
+            std::cout << "- - - - - - -" << std::endl;
         }
         /*
        * 0 0 0 0 0 0 0

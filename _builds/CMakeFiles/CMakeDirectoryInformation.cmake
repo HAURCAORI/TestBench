@@ -3,7 +3,7 @@
 
 # Relative path conversion top directories.
 set(CMAKE_RELATIVE_PATH_TOP_SOURCE "/tmp/guest-c46c0c/TestBench")
-set(CMAKE_RELATIVE_PATH_TOP_BINARY "/tmp/guest-c46c0c/TestBench")
+set(CMAKE_RELATIVE_PATH_TOP_BINARY "/tmp/guest-c46c0c/TestBench/_builds")
 
 # Force unix paths in dependencies.
 set(CMAKE_FORCE_UNIX_PATHS 1)

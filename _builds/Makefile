@@ -60,7 +60,7 @@ EQUALS = =
 CMAKE_SOURCE_DIR = /tmp/guest-c46c0c/TestBench
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /tmp/guest-c46c0c/TestBench
+CMAKE_BINARY_DIR = /tmp/guest-c46c0c/TestBench/_builds
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -68,7 +68,7 @@ CMAKE_BINARY_DIR = /tmp/guest-c46c0c/TestBench
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	cmake/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+	/tmp/guest-c46c0c/TestBench/cmake/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -78,7 +78,7 @@ edit_cache/fast: edit_cache
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	cmake/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/tmp/guest-c46c0c/TestBench/cmake/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /tmp/guest-c46c0c/TestBench/CMakeFiles /tmp/guest-c46c0c/TestBench//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /tmp/guest-c46c0c/TestBench/_builds/CMakeFiles /tmp/guest-c46c0c/TestBench/_builds//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /tmp/guest-c46c0c/TestBench/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /tmp/guest-c46c0c/TestBench/_builds/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

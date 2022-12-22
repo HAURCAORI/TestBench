@@ -6,3 +6,6 @@ project(
   VERSION 0.1
   DESCRIPTION "example"
   LANGUAGES CXX)
+
+  ADD_EXECUTABLE( main main.cpp )
+  

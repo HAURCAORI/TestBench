@@ -1,0 +1,3 @@
+/tmp/guest-c46c0c/TestBench/_builds/CMakeFiles/main.dir
+/tmp/guest-c46c0c/TestBench/_builds/CMakeFiles/edit_cache.dir
+/tmp/guest-c46c0c/TestBench/_builds/CMakeFiles/rebuild_cache.dir

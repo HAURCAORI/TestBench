@@ -34,7 +34,7 @@
         {
             "label": "CMake",
             "type": "shell",
-            "command": "./cmake/bin/cmake ./",
+            "command": "./cmake/bin/cmake -H. -B_builds; ./cmake/bin/cmake --build _builds",
             "problemMatcher": [],
             "group": "build"
         }

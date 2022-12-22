@@ -30,6 +30,13 @@
             "command": "${workspaceFolder}/bin/main",
             "problemMatcher": [],
             "group": "build"
+        },
+        {
+            "label": "CMake",
+            "type": "shell",
+            "command": "./cmake/bin/cmake ./",
+            "problemMatcher": [],
+            "group": "build"
         }
     ]
 }

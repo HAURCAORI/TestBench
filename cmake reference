@@ -1,0 +1,167 @@
+헤더 파일을 찾을 폴더(target_include_directory)
+라이브러리 의존성(target_link_libraries)
+빌드할 당시에 사용한 옵션(target_compile_options)
+
+
+PUBLIC
+- add_library에서 헤더 파일과 구현에서 라이브러리를 사용할 경우
+- target_link_libraries 등으로 폴더 지정 시 부모에게도 전달
+
+PRIVATE : 구현에서만 라이브러리를 사용할 경우
+
+INTERFACE : 헤더 파일에서만 라이브러리를 사용할 경우
+
+
+
+[TYPE]
+
+□ INTERNAL
+- CMake-GUI에서 보이지 않음
+- set(...)을 할 때 FORCE와 비슷하게 행동
+
+[Command Line Option]
+-B <path> : build directory 지정
+-C <initial-cache> : cache variable을 위한 initial-cache 지정
+-D <var>:<type>=<value> : cache variable 선언
+-P <cmake-script-file> : *.cmake file 실행
+
+-E <command> [<options>] : cross-platform command-line 명령 실행
+
+[Method]
+
+□ set(<variable> <value>) 
+
+□ set(<variable> <value>... CACHE <type> <docstring> [FORCE])
+- scope에 상관없는 variable 선언
+- 기존에 set(...Cache...)선언했을 시 무시하고 old varialbe을 계속 유지
+- FORCE를 통해 이미 cache variable이 선언된 값 변경 가능
+
+□ set_property()
+
+
+□ unset(<variable>)
+- normal variable 초기화
+
+□ unset(<variable> CACHE)
+- cache variable 및 option 초기화
+
+□ option(<variable> "<help_text>" [ON/OFF])
+
+□ cmake_minimum_required(VERSION x.x.x)
+- cmake 최소 요구 버전 설정
+- 무조건 첫번째 줄에 위치
+
+
+□ project(foo)
+- project 이름 및 언어 설정
+- 변수와 build tool check 수행
+※ cmake variable 중 project(...) 이후에 초기화 되는 값(e.g. CMAKE_<LANG>_COMPILER)이 있어 project 이후 값 사용
+
+□ cmake_policy(VERSION x.x.x)
+- x.x.x 버전의 동작을 적용
+
+□ cmake_policy(SET CMPxxxx [NEW/OLD])
+- cmake version 업데이트 후 오류가 에러로 발생할 경우 임시적으로 policy 동작 변경
+- OLD 지정 시 이전 version의 CMPxxxx에 해당하는 policy 동작 유지 가능
+- NEW 지정 시 이후 version의 CMPxxxx에 해당하는 policy 동작 유지 가능
+- cmake_minimum_required(VERSION ...) 및 cmake_policy(VERSION ...) 호출 시 초기화
+
+□ cmake_policy(PUSH) / cmake_policy(POP)
+- 특정 policy 상태 저장 및 가져오기
+
+
+□ add_library()
+
+□ add_subdirectory(<source_dir> [<binary_dir>])
+
+□ add_custom_command
+- 파일을 생성하기 위한 output 기능
+
+□ add_custom_target
+- 여러 명령을 묶어서 실행
+
+□ configure_file(*.h.in *.h)
+- Cmake 변수를 값으로 사용하는 configure 파일을 생성
+- *.h.in 파일에서 <@variable@>을 추가하면 Cmake 변수로 치환됨
+- 또는 #define 대신 #cmakedefine으로 사용하면 됨
+
+□ list(LENGTH <list> <variable>)
+- list의 길이를 variable로 반환
+
+□ list(GET <list> <index> <variable>)
+- list의 index를 variable로 반환
+
+□ list(REMOVE_AT <list> <index>)
+- list의 index를 삭제
+
+□ list(APPEND <variable> <value>)
+- list에 value를 추가
+
+□ include(<module>)
+- module을 불러옴-
+- 새로운 scope를 생성하지 않음
+
+□ foreach(<variable> <list>)
+- 각 list 요소를 variable로 반복
+- list의 element가 list일 경우 variable은 list가 됨
+
+□ RANGE (<start> = 0) <end> (<step>)
+- 범위에 해당하는 list 반환
+
+□ function(<name> (<args>))
+- name의 이름을 갖는 함수 생성
+- return value의 경우 set(...PARENT_SCOPE)이용
+
+□ return()
+- 함수 종료
+
+□ target_compile_definitions(<target> PUBLIC [items...])
+- <target>을 사용하는 경우 Debug option -D[item]을 추가해주어 매크로 지정
+
+□ target_link_libraries
+- 한 라이브러리에서 다른 라이브러리를 참조할 때 다른 라이브러리를 link함
+
+□ add_dependencies(<target> <dependencies>)
+- 빌드 순서를 제어하기 위해 사용
+- target이 필요로 하는 dependencies를 명시해 순서대로 빌드되게 함
+
+□ target_include_directories()
+- 헤더 파일들의 위치를 지정
+- #include <...> 와 같이 <> 형태로 include 가능
+
+□ target_sources(<target> <sources>...)
+- target에 sources를 추가
+
+[Variable]
+※ normal variable의 경우 scope를 벗어나면 소멸
+※ cache variable의 경우 변수가 유지됨(CMakeCache.txt에 저장되어 있음)
+※ add_subdirectory, function의 경우 새로운 scope로 처리(function에서 CMAKE_CURRENT_LIST_DIR변수 사용 시 함수가 정의된 파일의 경로 반환)
+※ include, macro의 경우 같은 scope로 처리
+
+※ normal variable 선언 후 같은 이름의 cache variable 선언 시 해당 scope는 cache variable로 처리하지만, cmake 재실행 시 이미 cache에 값이 있기 때문에 set(...CACHE...)가 무시되어 normal variable로 처리.
+
+
+
+- VERSION : version
+- POLICY : policy
+
+-${ARGV} : function의 모든 args 반환
+-${ARGV<i>} : function의 i번째에 해당하는 arg 반환
+-${ARGC} : function의 args 개수 반환
+-${ARGN} : placeholder 범위를 벗어난 args 반환
+
+▷ Environment variables
+- $ENV{...}
+- set(ENV{..} <value>)
+- unset(ENV{...})
+
+▷ Variables for Inf용하는 폴더를 지정하는 함수이며, ormation 
+- CMAKE_VERSION : cmake version 반환
+- CMAKE_SOURCE_DIR
+- CMAKE_BINARY_DIR 
+
+▷ Variables for Languages
+- CMAKE_<LANG>_COMPILER
+
+
+

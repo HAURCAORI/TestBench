@@ -32,8 +32,16 @@ endmacro()
 macro(LIBNAME result lib)
     string(REGEX REPLACE "^lib" "" NAME_REMOVE_LIB ${lib})
     string(FIND ${NAME_REMOVE_LIB} "." index)
+
     string(SUBSTRING ${NAME_REMOVE_LIB} 0 ${index} NAME_REMOVE_EXTENSION)
     set(${result} ${NAME_REMOVE_EXTENSION})
+endmacro()
+
+macro(LIBEXTENSION result lib)
+    string(FIND ${lib} "." index REVERSE)
+    MATH(EXPR nextindex "${index}+1")
+    string(SUBSTRING ${lib} ${nextindex} -1 EXTENSION)
+    set(${result} ${EXTENSION})
 endmacro()
 
 if(NOT LIBRARY_DIRS)
@@ -64,6 +72,10 @@ foreach(subdir ${LIBRARY_DIRS})
 
 
             LIBNAME(lib_name ${lib_check})
+            LIBEXTENSION(lib_extension ${lib_check})
+            message("EXTENSION : ${lib_extension}")
+            #add_librar(lib_name SHARED IMPORTED)
+
 
             list(APPEND LIBRARY_INCLUDE_DIRS ${LIB_INCLUDE_DIR})
             list(REMOVE_ITEM LIBRARY_LIST ${lib_check})

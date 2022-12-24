@@ -1,5 +1,5 @@
 set(LIBRARY_DIRS
-#    hdf5_cxx
+    hdf5_cxx
 )
 
 set(LIBRARY_LIST 
@@ -29,6 +29,7 @@ macro(SUBFILELIST result curdir)
     set(${result} ${filelist})
 endmacro()
 
+macro
 
 if(NOT LIBRARY_DIRS)
     SUBDIRLIST(LIBRARY_DIRS ${CMAKE_CURRENT_LIST_DIR})

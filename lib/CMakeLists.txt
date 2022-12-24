@@ -1,5 +1,5 @@
 set(LIBRARY_DIRS
-    hdf5_cxx
+#    hdf5_cxx
 )
 
 set(LIBRARY_LIST 
@@ -29,13 +29,18 @@ macro(SUBFILELIST result curdir)
     set(${result} ${filelist})
 endmacro()
 
-macro
+macro(LIBNAME result lib)
+    string(REGEX REPLACE "^lib" "" NAME_REMOVE_LIB ${lib})
+    string(FIND ${NAME_REMOVE_LIB} "." index)
+    string(SUBSTRING ${NAME_REMOVE_LIB} 0 ${index} NAME_REMOVE_EXTENSION)
+    set(${result} ${NAME_REMOVE_EXTENSION})
+endmacro()
 
 if(NOT LIBRARY_DIRS)
     SUBDIRLIST(LIBRARY_DIRS ${CMAKE_CURRENT_LIST_DIR})
 else()
     foreach(dir ${LIBRARY_DIRS})
-        if(NOT EXISTS ${dir})
+        if(NOT EXISTS "${CMAKE_CURRENT_LIST_DIR}/${dir}")
             message(FATAL_ERROR "Can't find library directory: ${dir}")
         endif()
     endforeach()
@@ -57,7 +62,8 @@ foreach(subdir ${LIBRARY_DIRS})
                 message(FATAL_ERROR "Can't find library include directory: ${LIB_INCLUDE_DIR}")
             endif()
 
-            
+
+            LIBNAME(lib_name ${lib_check})
 
             list(APPEND LIBRARY_INCLUDE_DIRS ${LIB_INCLUDE_DIR})
             list(REMOVE_ITEM LIBRARY_LIST ${lib_check})

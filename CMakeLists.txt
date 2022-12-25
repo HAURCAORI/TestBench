@@ -8,6 +8,8 @@ project(
 set(CMAKE_CXX_COMPILER g++)
 add_compile_options(-Wall -O2 -std=c++14)
 
+set(CMAKE_VERBOSE_MAKEFILE ON)
+
 # Set lib & binary output directory
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -23,8 +25,8 @@ set(LIBRARY_SEARCH_DIRS
 )
 
 set(LIBRARY_LIST 
-    libhdf5.a
-    libmpi.so
+    libhdf5_cpp.a
+#    libmpi.so
 )
 
 set(STATIC_LIBRARIES)

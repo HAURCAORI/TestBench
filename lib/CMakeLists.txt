@@ -1,12 +1,3 @@
-set(LIBRARY_DIRS
-#    hdf5_cxx
-)
-
-set(LIBRARY_LIST 
-    libhdf5.a
-    libmpi.so
-)
-
 macro(SUBDIRLIST result curdir)
   file(GLOB children RELATIVE ${curdir} ${curdir}/*)
   set(dirlist "")
@@ -39,15 +30,14 @@ endmacro()
 
 macro(LIBEXTENSION result lib)
     string(FIND ${lib} "." index REVERSE)
-    MATH(EXPR nextindex "${index}+1")
-    string(SUBSTRING ${lib} ${nextindex} -1 EXTENSION)
+    string(SUBSTRING ${lib} ${index} -1 EXTENSION)
     set(${result} ${EXTENSION})
 endmacro()
 
-if(NOT LIBRARY_DIRS)
-    SUBDIRLIST(LIBRARY_DIRS ${CMAKE_CURRENT_LIST_DIR})
+if(NOT LIBRARY_SEARCH_DIRS)
+    SUBDIRLIST(LIBRARY_SEARCH_DIRS ${CMAKE_CURRENT_LIST_DIR})
 else()
-    foreach(dir ${LIBRARY_DIRS})
+    foreach(dir ${LIBRARY_SEARCH_DIRS})
         if(NOT EXISTS "${CMAKE_CURRENT_LIST_DIR}/${dir}")
             message(FATAL_ERROR "Can't find library directory: ${dir}")
         endif()
@@ -55,7 +45,7 @@ else()
 endif()
 
 
-foreach(subdir ${LIBRARY_DIRS})
+foreach(subdir ${LIBRARY_SEARCH_DIRS})
     set(LIB_DIR "${CMAKE_CURRENT_LIST_DIR}/${subdir}/lib")
     set(LIB_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/${subdir}/include")
     if(NOT EXISTS ${LIB_DIR})
@@ -73,11 +63,38 @@ foreach(subdir ${LIBRARY_DIRS})
 
             LIBNAME(lib_name ${lib_check})
             LIBEXTENSION(lib_extension ${lib_check})
-            message("EXTENSION : ${lib_extension}")
-            #add_librar(lib_name SHARED IMPORTED)
 
+            set(lib_path "${LIB_DIR}/${lib_check}")
+
+            if(WIN32)
+                if(${lib_extension} STREQUAL ".lib")
+                    #add_library(${lib_name} STATIC IMPORTED)
+                    list(APPEND STATIC_LIBRARIES ${lib_path})
+                elseif(${lib_extension} STREQUAL ".dll")
+                    #add_library(${lib_name} SHARED IMPORTED)
+                    list(APPEND SHARED_LIBRARIES ${lib_path})
+                else()
+                    message(FATAL_ERROR "Unknown extension: ${lib_check}")
+                endif()
+            else()
+                if(${lib_extension} STREQUAL ".a")
+                    #add_library(${lib_name} STATIC IMPORTED)
+                    list(APPEND STATIC_LIBRARIES ${lib_path})
+                elseif(${lib_extension} STREQUAL ".so")
+                    #add_library(${lib_name} SHARED IMPORTED)
+                    list(APPEND SHARED_LIBRARIES ${lib_path})
+                else()
+                    message(FATAL_ERROR "Unknown extension: ${lib_check}")
+                endif()
+            endif()
+
+            #set_target_properties(${lib_name} PROPERTIES
+            #    IMPORTED_LOCATION "${LIB_DIR}/${lib_check}"
+            #    INTERFACE_INCLUDE_DIRECTORIES "${LIB_INCLUDE_DIR}"
+            #)
 
             list(APPEND LIBRARY_INCLUDE_DIRS ${LIB_INCLUDE_DIR})
+
             list(REMOVE_ITEM LIBRARY_LIST ${lib_check})
             message(STATUS "Find library: ${lib_check}")
         endif()
@@ -90,6 +107,8 @@ endif()
 
 set(LIBRARY_INCLUDE_DIRS ${LIBRARY_INCLUDE_DIRS} PARENT_SCOPE)
 
+set(STATIC_LIBRARIES ${STATIC_LIBRARIES} PARENT_SCOPE)
+set(SHARED_LIBRARIES ${SHARED_LIBRARIES} PARENT_SCOPE)
 
 #add_library(bar SHARED IMPORTED) # or STATIC instead of SHARED
 #set_target_properties(bar PROPERTIES

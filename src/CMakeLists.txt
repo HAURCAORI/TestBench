@@ -1,3 +1,10 @@
 add_executable(main main.cpp)
+target_link_libraries(main PRIVATE ${LIBRARY_TARGETS})
+target_include_directories(main PRIVATE ${PROJECT_INCLUDE_DIR} ${LIBRARY_INCLUDE_DIRS})
 
-target_link_libraries(main PRIVATE )
+set(runtime_path)
+foreach(lib_include_dir ${STATIC_LIBRARIES})
+    list(APPEND runtime_path "-Wl,-R${lib_include_dir}")
+endforeach() 
+target_link_options(main PRIVATE ${runtime_path})
+message("runtime:${runtime_path}")

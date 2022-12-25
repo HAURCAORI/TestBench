@@ -92,6 +92,7 @@ main_EXTERNAL_OBJECTS =
 
 bin/main: src/CMakeFiles/main.dir/main.cpp.o
 bin/main: src/CMakeFiles/main.dir/build.make
+bin/main: /tmp/guest-oazige/TestBench/lib/hdf5_cxx/lib/libhdf5.a
 bin/main: src/CMakeFiles/main.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/tmp/guest-oazige/TestBench/_builds/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable ../bin/main"
 	cd /tmp/guest-oazige/TestBench/_builds/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/main.dir/link.txt --verbose=$(VERBOSE)

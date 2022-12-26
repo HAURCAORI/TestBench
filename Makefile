@@ -5,7 +5,8 @@ PROJECT_PATH = .
 LIB_INCLUDE = ./lib/hdf5_cxx/include
 LIB_PATH = ./lib
 
-LIBS = -L$(LIB_PATH)/hdf5_cxx/lib -Wl,--copy-dt-needed-entries,-R$(LIB_PATH)/hdf5_cxx/lib -lhdf5_cpp
+LIBS = -L$(LIB_PATH)/hdf5_cxx/lib -Wl,--copy-dt-needed-entries,-R$(LIB_PATH)/hdf5_cxx/lib -lhdf5
+#LIBS = -L$(LIB_PATH)/hdf5_cxx/lib -Wl,--copy-dt-needed-entries,-R$(LIB_PATH)/hdf5_cxx/lib -lhdf5
 
 #STATIC_LIBS = $(subst lib, -l,$(basename $(notdir $(wildcard $(LIB_PATH)/*/*.a))))
 #DYNAMIC_LIBS = $(notdir $(wildcard $(LIB_PATH)/*/*.so.*))

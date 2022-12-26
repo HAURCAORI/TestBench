@@ -4,7 +4,7 @@
 # compile CXX with g++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/tmp/guest-xbnqcv/TestBench/lib/hdf5_cxx/include
+CXX_INCLUDES = -I/tmp/guest-gq3xoh/TestBench/include -isystem /tmp/guest-gq3xoh/TestBench/lib/hdf5_cxx/include -isystem /tmp/guest-gq3xoh/TestBench/lib/openmpi/include
 
-CXX_FLAGS = -Wall -O2 -std=c++14
+CXX_FLAGS = -Wall -O2 -std=c++17
 

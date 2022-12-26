@@ -1,59 +1,53 @@
+# <CMake Minimum Version>
 cmake_minimum_required(VERSION 3.11)
 
+# <Project Property>
+set(PROGRAM_NAME "main")
 project(
-  TestBench
+  ${PROGRAM_NAME}
   VERSION 1.0
   LANGUAGES CXX)
 
+# <CMake Options>
+#set(CMAKE_VERBOSE_MAKEFILE ON)
+
+# <Compiler Options>
 set(CMAKE_CXX_COMPILER g++)
-add_compile_options(-Wall -O2 -std=c++14)
+add_compile_options(-Wall -O2 -std=c++17)
+add_link_options(-Wl,--copy-dt-needed-entries)
 
-set(CMAKE_VERBOSE_MAKEFILE ON)
+# <Set Directories>
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-# Set lib & binary output directory
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+# <Project Variable>
+set(PROGRAM_SOURCE_DIR  "${PROJECT_SOURCE_DIR}/src")
+set(PROGRAM_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
+set(PROGRAM_LIBRARY_DIR "${PROJECT_SOURCE_DIR}/LIB")
+set(PROGRAM_LIBRARY_TARGETS)  # Program Include Targets
+set(PROGRAM_STATIC_LIBRARIES)
+set(PROGRAM_SHARED_LIBRARIES)
 
-# Variable
-set(GLOBAL_INCLUDE_DIR "include")
-set(LIBRARY_INCLUDE_DIRS)
+# <Set Targets(Executable & Library)>
+# PROGRAM_SOURCE_FILES [list] : Compile file list.
+# If varialbe is empty, search all files.
+set(PROGRAM_SOURCE_FILES
 
-#Library Search DIRS
-set(LIBRARY_SEARCH_DIRS
+)
+
+# PROGRAM_LIBRARY_NAMES [list] : Include libray list.
+# If varialbe is empty, search all files.
+set(PROGRAM_LIBRARY_NAMES
 #    hdf5_cxx
 )
 
-set(LIBRARY_LIST 
-    libhdf5_cpp.a
-#    libmpi.so
+# PROGRAM_LIBRARY_FILES [list] : Specific library files to include.
+set(PROGRAM_LIBRARY_FILES 
+  libhdf5_cpp.so
+  libmpi.so
 )
 
-set(STATIC_LIBRARIES)
-set(SHARED_LIBRARIES)
-set(LIBRARY_TARGETS)
-
+#= Processing =#
 add_subdirectory(lib)
-
-macro(DIRLASTELEMENT result dir)
-    string(FIND ${dir} "/" index REVERSE)
-    MATH(EXPR nextindex "${index} + 1")
-    string(SUBSTRING ${dir} ${nextindex} -1 name)
-    set(${result} ${name})
-endmacro()
-
-foreach(static_lib ${STATIC_LIBRARIES})
-  DIRLASTELEMENT(lib_name ${static_lib})
-  add_library(${lib_name} STATIC IMPORTED)
-  set_target_properties(${lib_name} PROPERTIES
-    IMPORTED_LOCATION "${static_lib}"
-    #INTERFACE_INCLUDE_DIRECTORIES "${LIB_INCLUDE_DIR}"
-  )
-  list(APPEND LIBRARY_TARGETS ${lib_name})
-endforeach()
-
-
 add_subdirectory(src)
-
-
-include_directories(${PROJECT_INCLUDE_DIR} ${LIBRARY_INCLUDE_DIRS})

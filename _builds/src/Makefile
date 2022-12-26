@@ -130,6 +130,30 @@ main/fast:
 	cd /tmp/guest-gq3xoh/TestBench/_builds && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/main.dir/build.make src/CMakeFiles/main.dir/build
 .PHONY : main/fast
 
+help.o: help.cpp.o
+.PHONY : help.o
+
+# target to build an object file
+help.cpp.o:
+	cd /tmp/guest-gq3xoh/TestBench/_builds && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/main.dir/build.make src/CMakeFiles/main.dir/help.cpp.o
+.PHONY : help.cpp.o
+
+help.i: help.cpp.i
+.PHONY : help.i
+
+# target to preprocess a source file
+help.cpp.i:
+	cd /tmp/guest-gq3xoh/TestBench/_builds && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/main.dir/build.make src/CMakeFiles/main.dir/help.cpp.i
+.PHONY : help.cpp.i
+
+help.s: help.cpp.s
+.PHONY : help.s
+
+# target to generate assembly for a file
+help.cpp.s:
+	cd /tmp/guest-gq3xoh/TestBench/_builds && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/main.dir/build.make src/CMakeFiles/main.dir/help.cpp.s
+.PHONY : help.cpp.s
+
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -163,6 +187,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... main"
+	@echo "... help.o"
+	@echo "... help.i"
+	@echo "... help.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

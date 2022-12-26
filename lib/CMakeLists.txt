@@ -30,8 +30,12 @@ endmacro()
 
 macro(M_LIB_EXTENSION result lib)
     string(FIND ${lib} "." index REVERSE)
-    string(SUBSTRING ${lib} ${index} -1 extension)
-    set(${result} ${extension})
+    if(index EQUAL -1)
+        set(${result} ${lib})
+    else()
+        string(SUBSTRING ${lib} ${index} -1 extension)
+        set(${result} ${extension})
+    endif()
 endmacro()
 
 

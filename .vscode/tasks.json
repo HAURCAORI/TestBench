@@ -5,36 +5,30 @@
     "runner": "terminal",
     "tasks": [
         {
-            "label": "c++ build",
-            "type": "shell",
-            "command": "make -f ./Makefile",
-            "problemMatcher": ["$gcc"],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
-        },
-        {
             "label": "Commit",
             "type": "shell",
             "command": "git add .; git commit -m vscode;git push origin master;",
             "problemMatcher": [],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
+            "group": "build"
         },
         {
             "label": "excute",
             "type": "shell",
-            "command": "${workspaceFolder}/bin/main",
+            "command": "${workspaceFolder}/_builds/bin/main",
             "problemMatcher": [],
             "group": "build"
         },
         {
-            "label": "CMake",
+            "label": "CMake Configure",
             "type": "shell",
-            "command": "./cmake/bin/cmake -H. -B_builds; ./cmake/bin/cmake --build _builds",
+            "command": "./cmake/bin/cmake -H. -B_builds",
+            "problemMatcher": [],
+            "group": "build"
+        },
+        {
+            "label": "CMake Build",
+            "type": "shell",
+            "command": "./cmake/bin/cmake --build _builds",
             "problemMatcher": [],
             "group": "build"
         }

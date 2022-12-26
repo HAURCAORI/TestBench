@@ -16,6 +16,7 @@ set(CMAKE_CXX_COMPILER g++)
 add_compile_options(-Wall -O2 -std=c++17)
 add_link_options(-Wl,--copy-dt-needed-entries)
 
+
 # <Set Directories>
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
@@ -28,6 +29,7 @@ set(PROGRAM_LIBRARY_DIR "${PROJECT_SOURCE_DIR}/LIB")
 set(PROGRAM_LIBRARY_TARGETS)  # Program Include Targets
 set(PROGRAM_STATIC_LIBRARIES)
 set(PROGRAM_SHARED_LIBRARIES)
+set(PROGRAM_SOURCE_EXTENSIONS .cpp .cc .c)
 
 # <Set Targets(Executable & Library)>
 # PROGRAM_SOURCE_FILES [list] : Compile file list.

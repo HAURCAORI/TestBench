@@ -1,5 +1,6 @@
 #include <iostream>
 #include "H5Cpp.h"
+#include "main.h"
 
 using namespace H5;
 
@@ -263,6 +264,7 @@ int readHDF5()
 
 int main(void)
 {
+    helloworld();
     createHDF5();
     readHDF5();
     return 0; // successfully terminated
